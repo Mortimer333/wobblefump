@@ -18,7 +18,7 @@
     "require": {
         "php": ">=8",
         "ext-curl": "*",
-        "symfony/console": "^6",
+        "symfony/console": ">=6",
         "brokencube/fft": "^1.0"
     }
 }
