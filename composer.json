@@ -19,6 +19,8 @@
         "php": ">=8",
         "ext-curl": "*",
         "symfony/console": ">=6",
-        "brokencube/fft": "^1.0"
+        "brokencube/fft": "^1.0",
+        "symfony/http-kernel": ">=6",
+        "symfony/dependency-injection": ">=6"
     }
 }

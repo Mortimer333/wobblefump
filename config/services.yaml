@@ -1,0 +1,6 @@
+services:
+  Mortimer333\Wobblefump\:
+    autowire: true
+    autoconfigure: true
+    public: true
+    resource: '../src/'

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Mortimer333\Wobblefump\Command;
+
 use Brokencube\FFT\FFT;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,7 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand('wobblefump:diff:fourier', 'Transform difference between two files using Fourier')]
+#[AsCommand('wobblefump:diff:fourier', 'Transform binary difference between two files using Fourier')]
 final class FindTheDifferenceFourier extends Command
 {
     private SymfonyStyle $output;
@@ -38,7 +40,7 @@ final class FindTheDifferenceFourier extends Command
                 'p',
                 InputOption::VALUE_REQUIRED,
                 "Precision of comparison (int) should be - size of chunks (1 is per one byte; 100 is per 100 bytes).\n"
-                . ' Precision will be rounded down to chunk size.',
+                . ' Precision will be rounded down to chunk size and it must be a power of 2.',
                 self::PRECISION_DEFAULT,
             )
             ->addOption(
@@ -216,7 +218,7 @@ final class FindTheDifferenceFourier extends Command
         string|false $diffOutput,
     ): array
     {
-        $tmp = is_string($diffOutput) ? fopen($diffOutput, 'w') : tmpfile();
+        $tmp = is_string($diffOutput) ? fopen($diffOutput, 'r+') : tmpfile();
         if (!$tmp) {
             throw new \Exception('Cannot create diff output file');
         }
