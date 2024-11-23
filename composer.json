@@ -1,0 +1,24 @@
+{
+    "name": "mortimer333/wobblefump",
+    "description": "Symfony command to calculate binary difference between two files and transform the result using Fourier",
+    "type": "symfony-bundle",
+    "license": "GPL-2.0-only",
+    "autoload": {
+        "psr-4": {
+            "Mortimer333\\Wobblefump\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "michal.dzierzbicki",
+            "email": "michal.dzierzbicki@vp.pl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8",
+        "ext-curl": "*",
+        "symfony/console": "^6",
+        "brokencube/fft": "^1.0"
+    }
+}
