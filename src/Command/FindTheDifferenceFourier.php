@@ -151,7 +151,7 @@ final class FindTheDifferenceFourier extends Command
             $diffFileSize = $this->streamGetFileSize($tmp);
             $this->output('Diff file has ' . $this->toMiB($diffFileSize) . ' MB');
 
-            $amountOfOperations = (int) ceil($diffFileSize/$precision);
+            $amountOfOperations = (int) ceil($diffFileSize / $precision);
             $this->output('Calculating Fourier Transform on the results...');
             $progressBar = $this->tryToCreateProgressBar($amountOfOperations);
 
@@ -187,7 +187,8 @@ final class FindTheDifferenceFourier extends Command
             );
             $this->output('[MEMORY] End peak memory usage ' . $this->toMiB($end) . 'MB');
             $this->output(
-                '[MEMORY] Actual peak memory usage for the command: ' . $this->toMiB($end - $startingMemoryUsage) . 'MB',
+                '[MEMORY] Actual peak memory usage for the command: '
+                . $this->toMiB($end - $startingMemoryUsage) . 'MB',
             );
         }
     }
@@ -216,8 +217,7 @@ final class FindTheDifferenceFourier extends Command
         string $new,
         int $chunk,
         string|false $diffOutput,
-    ): array
-    {
+    ): array {
         $tmp = is_string($diffOutput) ? fopen($diffOutput, 'r+') : tmpfile();
         if (!$tmp) {
             throw new \Exception('Cannot create diff output file');
@@ -254,11 +254,11 @@ final class FindTheDifferenceFourier extends Command
         string $new,
                $originalHandle,
                $newHandle,
-        int    $originalSize,
-        int    $newSize,
-        int    $chunk = self::CHUNK_DEFAULT,
-        int    $precision = self::PRECISION_DEFAULT,
-        bool   $isTest = false,
+        int $originalSize,
+        int $newSize,
+        int $chunk = self::CHUNK_DEFAULT,
+        int $precision = self::PRECISION_DEFAULT,
+        bool $isTest = false,
     ): \Generator {
         $read = 0;
         $loopCounter = 0;
@@ -312,6 +312,11 @@ final class FindTheDifferenceFourier extends Command
         return $progressBar;
     }
 
+    /**
+     * @param array<int> $data
+     *
+     * @return array<float>
+     */
     private function fftMagnitude(array $data): array
     {
         return FFT::magnitude($data);
@@ -335,6 +340,9 @@ final class FindTheDifferenceFourier extends Command
         }
     }
 
+    /**
+     * @param resource $stream
+     */
     private function streamGetFileSize($stream): int
     {
         $stats = fstat($stream);
@@ -344,6 +352,7 @@ final class FindTheDifferenceFourier extends Command
 
     /**
      * @return resource
+     *
      * @throws \Exception
      */
     private function openResultFile(string $path)
@@ -356,10 +365,7 @@ final class FindTheDifferenceFourier extends Command
         return $result;
     }
 
-    /**
-     * @param mixed $handle
-     */
-    private function tryToCloseAndUnlockFile($handle): void
+    private function tryToCloseAndUnlockFile(mixed $handle): void
     {
         if (!is_resource($handle)) {
             return;
@@ -493,13 +499,13 @@ final class FindTheDifferenceFourier extends Command
 
     /**
      * @return array{
-     * 0: string,
-     * 1: string,
-     * 2: string,
-     * 3: int<1, max>,
-     * 4: int<1, max>,
-     * 5: string|false,
-     * 6: string,
+     *   0: string,
+     *   1: string,
+     *   2: string,
+     *   3: int<1, max>,
+     *   4: int<1, max>,
+     *   5: string|false,
+     *   6: string,
      * }
      *
      * @throws \Exception
@@ -534,11 +540,12 @@ final class FindTheDifferenceFourier extends Command
         }
 
         $this->assert($precision < 1, 'Precision cannot be lower then 1');
-        /** @var int<1, max> $precision */
         $this->assert(($precision & ($precision - 1)) !== 0, 'Precision must be a power of 2');
         $this->assert($chunk < 1, 'Chunk cannot be lower then 1');
+        /** @var int<1, max> $precision */
         /** @var int<1, max> $chunk */
         if ($precision > $chunk) {
+            /* @var int<1, max> $precision */
             $precision = $chunk;
         }
 
